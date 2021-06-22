@@ -1,7 +1,7 @@
 # Word Finder
 
-[![GitHub Workflow Status](https://github.com/custom-d/word-finder/workflows/Run%20tests/badge.svg)](https://github.com/custom-d/word-finder/actions)
-[![styleci](https://styleci.io/repos/CHANGEME/shield)](https://styleci.io/repos/CHANGEME)
+[![Run tests](https://github.com/customd/word-finder/actions/workflows/default.yml/badge.svg)](https://github.com/customd/word-finder/actions/workflows/default.yml)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/custom-d/word-finder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/custom-d/word-finder/?branch=master)
 
 [![Packagist](https://img.shields.io/packagist/v/custom-d/word-finder.svg)](https://packagist.org/packages/custom-d/word-finder)
 [![Packagist](https://poser.pugx.org/custom-d/word-finder/d/total.svg)](https://packagist.org/packages/custom-d/word-finder)
@@ -25,7 +25,7 @@ php artisan vendor:publish --provider="CustomD\WordFinder\ServiceProvider"
 
 ## Usage
 
-CHANGE ME
+`WordFinder::create(Collection, gridSize, minWordLen, maxWordLen)`
 
 ## Security
 
