@@ -560,5 +560,10 @@ class WordFinderTest extends TestCase
         $this->assertIsArray($grid->getPuzzleWords()->toArray());
         $this->assertIsString($grid->getTextGrid());
         $this->assertIsArray($grid->getGrid());
+
+        $this->assertCount(6, $grid->getGrid());
+        foreach ($grid->getGrid() as $row) {
+            $this->assertCount(6, collect($row)->filter());
+        }
     }
 }

@@ -130,7 +130,8 @@ class Grid
         }
 
         if (! $flag) {
-            $word->setLabel($word->getInversed() ? strrev($word->getLabel()) : $word->getLabel());
+            $randomWord = $this->getRandomWord($len);
+            $word->setLabel($word->getInversed() ? strrev($randomWord) : $randomWord);
             $this->addWord($word);
             return;
         }
@@ -318,23 +319,6 @@ class Grid
             $r .= implode(" ", $row);
         }
         return $r;
-
-        $cpt=0;
-        foreach ($this->cells as $letter) {
-            if ($letter=='') {
-                $r.=chr(rand(65, 90));
-            } else {
-                $r.=$letter;
-            }
-            $r.=' ';
-            $cpt++;
-            if ($cpt==$this->gridSize) {
-                $r.="\n";
-                $cpt=0;
-            }
-        }
-
-        return $r;
     }
 
     public function getGrid()
@@ -359,7 +343,7 @@ class Grid
         return collect($this->wordsList)->map(function (Word $word) {
             $label = $word->getLabel();
             if ($word->getInversed()) {
-                $label = strrev($label);
+                $label = strrev(/** @scrutinizer ignore-type */$label);
             }
             return $label;
         });
