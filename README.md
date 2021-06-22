@@ -1,7 +1,8 @@
 # Word Finder
 
 [![Run tests](https://github.com/customd/word-finder/actions/workflows/default.yml/badge.svg)](https://github.com/customd/word-finder/actions/workflows/default.yml)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/custom-d/word-finder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/custom-d/word-finder/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/customd/word-finder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/customd/word-finder/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/customd/word-finder/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
 [![Packagist](https://img.shields.io/packagist/v/custom-d/word-finder.svg)](https://packagist.org/packages/custom-d/word-finder)
 [![Packagist](https://poser.pugx.org/custom-d/word-finder/d/total.svg)](https://packagist.org/packages/custom-d/word-finder)
