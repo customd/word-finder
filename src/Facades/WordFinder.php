@@ -15,4 +15,9 @@ class WordFinder extends Facade
     {
         return 'word-finder';
     }
+
+    public static function getRandomChar(): string
+    {
+        return resolve(config('word-finder.character_map'))->getRandomChar();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace CustomD\WordFinder;
 
+use CustomD\WordFinder\Facades\WordFinder;
 use RuntimeException;
 use Illuminate\Support\Collection;
 use CustomD\WordFinder\Traits\HasWordCollection;
@@ -258,7 +259,7 @@ class Grid
         $column = 0;
         $row = 0;
         foreach ($this->cells as $letter) {
-            $cell = $letter ?? chr(rand(65, 90));
+            $cell = $letter ?? WordFinder::getRandomChar();
             $return[$row][$column] = $cell;
             $column++;
             if ($column === $this->gridSize) {
