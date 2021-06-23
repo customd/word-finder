@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/customd/word-finder/compare/v1.0.2...v1.1.0) (2021-06-23)
+
+
+### Features
+
+* **mapping:** :art: allow selection of character mapping for the puzzle ([ccc78f8](https://github.com/customd/word-finder/commit/ccc78f8e39b1665e8c47ceb14afeb6f901708c28))
+
 ## [1.0.2](https://github.com/customd/word-finder/compare/v1.0.1...v1.0.2) (2021-06-23)
 
 
