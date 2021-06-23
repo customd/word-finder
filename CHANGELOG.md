@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/customd/word-finder/compare/v1.1.0...v1.1.1) (2021-06-23)
+
+
+### Bug Fixes
+
+* Class name spelling mismatch, ([80f59e8](https://github.com/customd/word-finder/commit/80f59e849fc35f3fb6bf59898996ad062f5cf4af))
+
 # [1.1.0](https://github.com/customd/word-finder/compare/v1.0.2...v1.1.0) (2021-06-23)
 
 
