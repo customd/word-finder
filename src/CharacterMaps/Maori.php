@@ -5,7 +5,7 @@ namespace CustomD\WordFinder\CharacterMaps;
 use Illuminate\Support\Collection;
 use CustomD\WordFinder\CharacterMap;
 
-class Moari implements CharacterMap
+class Maori implements CharacterMap
 {
 
     protected Collection $chars;
@@ -37,6 +37,6 @@ class Moari implements CharacterMap
 
     public function getRandomChar()
     {
-        return $this->chars->random();
+        return chr($this->chars->random());
     }
 }
