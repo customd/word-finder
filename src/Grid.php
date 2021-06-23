@@ -23,15 +23,25 @@ class Grid
      */
     protected int $gridSize;
 
+    /**
+     * Database of words to choose from
+     */
+    protected Collection $wordsCollection;
 
-    protected Collection $wordsCollection; // base de données de mots SQLite
+    /**
+     * cells holding the collection of lettes
+     */
+    protected array $cells = [];
 
-    const RENDER_HTML = 0; // afficher la grille en HTML
-    const RENDER_TEXT = 1; // afficher la grille en mode texte
+    /**
+     * Words used within the puzzle
+     */
+    protected array $wordsList = [];
 
-    protected $cells; // (tableau de size*size éléments String) cellules de la grille, chacune contenant une lettre
-    protected $wordsList = []; // (tableau d'objets Word) : liste des mots à trouver
-    protected $columnArray = []; // tableau (Int) des numéros des colonnes d'après les index des cellules
+    /**
+     * column mapping
+     */
+    protected array $columnArray = [];
 
     public function __construct(int $gridSize, int $minWordLen, int $maxWordLen, Collection $wordsCollection)
     {
@@ -121,7 +131,7 @@ class Grid
         $flag=false;
 
         for ($i=$word->getStart(); $i<=$word->getEnd(); $i+=$increment) {
-            if ($this->cells[$i]=='') {
+            if ($this->cells[$i]=== null) {
                 $string .= '_';
             } else {
                 $string .= $this->cells[$i];
@@ -149,7 +159,6 @@ class Grid
     {
         $inc = 1;
         $word->setEnd($word->getStart()+$len-1);
-                 // si mot placé sur 2 lignes on décale à gauche
         while ($this->columnArray[$word->getEnd()] < $this->columnArray[$word->getStart()]) {
             $word->setStart($word->getStart()-1);
             $word->setEnd($word->getStart()+$len-1);
@@ -162,7 +171,6 @@ class Grid
     {
         $inc=$this->gridSize;
         $word->setEnd($word->getStart()+($len*$this->gridSize)-$this->gridSize);
-                // si le mot dépasse la grille en bas, on décale vers le haut
         while ($word->getEnd()>($this->gridSize*$this->gridSize)-1) {
             $word->setStart($word->getStart()-$this->gridSize);
             $word->setEnd($word->getStart()+($len*$this->gridSize)-$this->gridSize);
@@ -175,12 +183,10 @@ class Grid
     {
         $inc=$this->gridSize+1;
         $word->setEnd($word->getStart()+($len*($this->gridSize+1))-($this->gridSize+1));
-                // si le mot dépasse la grille à droite, on décale à gauche
         while ($this->columnArray[$word->getEnd()] < $this->columnArray[$word->getStart()]) {
             $word->setStart($word->getStart()-1);
             $word->setEnd($word->getStart()+($len*($this->gridSize+1))-($this->gridSize+1));
         }
-                // si le mot dépasse la grille en bas, on décale vers le haut
         while ($word->getEnd()>($this->gridSize*$this->gridSize)-1) {
             $word->setStart($word->getStart()-$this->gridSize);
             $word->setEnd($word->getStart()+($len*($this->gridSize+1))-($this->gridSize+1));
@@ -192,12 +198,10 @@ class Grid
     {
         $inc=$this->gridSize-1;
         $word->setEnd($word->getStart()+(($len-1)*($this->gridSize-1)));
-                // si le mot sort de la grille à gauche, on décale à droite
         while ($this->columnArray[$word->getEnd()] > $this->columnArray[$word->getStart()]) {
             $word->setStart($word->getStart()+1);
             $word->setEnd($word->getStart()+(($len-1)*($this->gridSize-1)));
         }
-                // si le mot dépasse la grille en bas, on décale vers le haut
         while ($word->getEnd()>($this->gridSize*$this->gridSize)-1) {
             $word->setStart($word->getStart()-$this->gridSize);
             $word->setEnd($word->getStart()+(($len-1)*($this->gridSize-1)));
