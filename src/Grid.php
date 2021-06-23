@@ -2,13 +2,17 @@
 
 namespace CustomD\WordFinder;
 
-use Illuminate\Support\Collection;
 use RuntimeException;
+use Illuminate\Support\Collection;
+use CustomD\WordFinder\Traits\HasWordCollection;
 
 class Grid
 {
 
-     /**
+    use HasWordCollection;
+
+
+    /**
      * minimum word length for the puzzle
      */
     protected int $minWordLen;
@@ -22,11 +26,6 @@ class Grid
      * grid side length
      */
     protected int $gridSize;
-
-    /**
-     * Database of words to choose from
-     */
-    protected Collection $wordsCollection;
 
     /**
      * cells holding the collection of lettes
@@ -48,8 +47,8 @@ class Grid
         $this->minWordLen = $minWordLen;
         $this->maxWordLen = $maxWordLen;
 
-        $this->setWordsCollection($wordsCollection)
-            ->setGridsize($gridSize)
+        $this->setGridsize($gridSize)
+            ->setWordsCollection($wordsCollection)
             ->initGrid();
     }
 
@@ -59,20 +58,9 @@ class Grid
             throw new RuntimeException('size must be greater than '.$this->minWordLen);
         }
 
-        if ($gridSize < $this->maxWordLen) {
-            $this->maxWordLen = $gridSize;
-        }
-
         $this->gridSize = $gridSize;
-
-        return $this;
-    }
-
-    protected function setWordsCollection(Collection $wordsCollection): self
-    {
-        $this->wordsCollection = $wordsCollection->filter(function ($word) {
-            return strlen($word) >= $this->minWordLen && strlen($word) <= $this->maxWordLen;
-        })->map(fn($word) => strtoupper($word));
+        //max word length cannot be greater than the grid size.
+        $this->maxWordLen = min($gridSize, $this->maxWordLen);
 
         return $this;
     }
@@ -106,32 +94,13 @@ class Grid
         return $this;
     }
 
-    protected function getRandomWordLength(array $exclude = []): int
-    {
-        if (count($exclude) >= ($this->maxWordLen - $this->minWordLen)) {
-            throw new RuntimeException("Failed to generate a starting word . please add some additional words to your system");
-        }
-
-        do {
-            $len = rand($this->minWordLen, $this->gridSize);
-        } while (in_array($len, $exclude));
-
-        $available = $this->wordsCollection->filter(function ($word) use ($len) {
-            return strlen($word) === $len;
-        })->count();
-
-        $exclude[] = $len;
-
-        return $available > 0 ? $len : $this->getRandomWordLength($exclude);
-    }
-
     protected function addPlacedWord(Word $word, int $increment, int $len): void
     {
         $string = '';
         $flag=false;
 
         for ($i=$word->getStart(); $i<=$word->getEnd(); $i+=$increment) {
-            if ($this->cells[$i]=== null) {
+            if ($this->cells[$i] === null) {
                 $string .= '_';
             } else {
                 $string .= $this->cells[$i];
@@ -150,8 +119,7 @@ class Grid
             return;
         }
 
-        $word->setLabel($this->getWordLike($string));
-        $word->setInversed(false);
+        $word->setLabel($this->getWordLike($string))->setInversed(false);
         $this->addWord($word);
     }
 
@@ -238,42 +206,6 @@ class Grid
         return ($x % $this->gridSize)+1;
     }
 
-    protected function markWordUsed($word): void
-    {
-        $this->wordsCollection = $this->wordsCollection->reject(function ($current) use ($word) {
-            return $current === $word;
-        });
-    }
-
-    protected function getRandomWord(int $len): string
-    {
-        $word = $this->wordsCollection->filter(function ($word) use ($len) {
-            return strlen($word) === $len;
-        })->random(1)->first();
-
-        $this->markWordUsed($word);
-
-        return $word;
-    }
-
-    protected function getWordLike(string $pattern): ?string
-    {
-        $pattern = str_replace("_", ".", $pattern);
-        $words = $this->wordsCollection->filter(function ($word) use ($pattern) {
-            return preg_match("/^$pattern\$/i", $word);
-        });
-
-        if ($words->count() === 0) {
-            return null;
-        }
-
-        $word = $words->random(1)->first();
-
-        $this->markWordUsed($word);
-        return $word;
-    }
-
-
     protected function addWord(Word $word): void
     {
         if ($word->getLabel() === null) {
@@ -281,35 +213,30 @@ class Grid
         }
 
         $j=0;
+        $incrementBy = 1;
         switch ($word->getOrientation()) {
             case Word::HORIZONTAL:
-                for ($i=$word->getStart(); $j<strlen($word->getLabel()); $i++) {
-                    $this->cells[$i]=substr($word->getLabel(), $j, 1);
-                    $j++;
-                }
+                $incrementBy=1;
                 break;
 
             case Word::VERTICAL:
-                for ($i=$word->getStart(); $j<strlen($word->getLabel()); $i+=$this->gridSize) {
-                    $this->cells[$i]=substr($word->getLabel(), $j, 1);
-                    $j++;
-                }
+                $incrementBy=$this->gridSize;
                 break;
 
             case Word::DIAGONAL_LEFT_TO_RIGHT:
-                for ($i=$word->getStart(); $j<strlen($word->getLabel()); $i+=$this->gridSize+1) {
-                    $this->cells[$i]=substr($word->getLabel(), $j, 1);
-                    $j++;
-                }
+                $incrementBy=$this->gridSize+1;
                 break;
 
             case Word::DIAGONAL_RIGHT_TO_LEFT:
-                for ($i=$word->getStart(); $j<strlen($word->getLabel()); $i+=$this->gridSize-1) {
-                    $this->cells[$i]=substr($word->getLabel(), $j, 1);
-                    $j++;
-                }
+                $incrementBy=$this->gridSize-1;
                 break;
         }
+
+        for ($i = $word->getStart(); $j < strlen($word->getLabel()); $i += $incrementBy) {
+            $this->cells[$i] = substr($word->getLabel(), $j, 1);
+            $j++;
+        }
+
         $this->wordsList[]=$word;
     }
 
