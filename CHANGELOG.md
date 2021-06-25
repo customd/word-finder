@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/customd/word-finder/compare/v1.1.1...v1.1.2) (2021-06-25)
+
+
+### Bug Fixes
+
+* :bug: used Str helper for case and length ([145daa3](https://github.com/customd/word-finder/commit/145daa305a1e3ea3b0e096fac2dbd0de43ffe5c4))
+
 ## [1.1.1](https://github.com/customd/word-finder/compare/v1.1.0...v1.1.1) (2021-06-23)
 
 
