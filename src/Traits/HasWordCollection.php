@@ -4,6 +4,7 @@ namespace CustomD\WordFinder\Traits;
 
 use RuntimeException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait HasWordCollection
 {
@@ -17,9 +18,9 @@ trait HasWordCollection
     protected function setWordsCollection(Collection $wordsCollection): self
     {
         $this->wordsCollection = $wordsCollection->filter(
-            fn ($word) =>  strlen($word) >= $this->minWordLen && strlen($word) <= $this->maxWordLen
+            fn ($word) =>  Str::length($word) >= $this->minWordLen && Str::length($word) <= $this->maxWordLen
         )
-        ->map(fn($word) => strtoupper($word));
+        ->map(fn($word) => Str::upper($word));
 
         return $this;
     }
@@ -34,7 +35,7 @@ trait HasWordCollection
             $len = rand($this->minWordLen, $this->gridSize);
         } while (in_array($len, $exclude));
 
-        $available = $this->wordsCollection->filter(fn ($word) => strlen($word) === $len)->count();
+        $available = $this->wordsCollection->filter(fn ($word) => Str::length($word) === $len)->count();
 
         $exclude[] = $len;
 
@@ -51,7 +52,7 @@ trait HasWordCollection
     protected function getRandomWord(int $len): string
     {
         $word = $this->wordsCollection->filter(function ($word) use ($len) {
-            return strlen($word) === $len;
+            return Str::length($word) === $len;
         })->random(1)->first();
 
         $this->markWordUsed($word);
