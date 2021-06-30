@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/customd/word-finder/compare/v1.1.3...v1.2.0) (2021-06-30)
+
+
+### Features
+
+* added method to get final grid size ([ffc5742](https://github.com/customd/word-finder/commit/ffc57422f99eb2ece3f8067ce34118596c76140d))
+
 ## [1.1.3](https://github.com/customd/word-finder/compare/v1.1.2...v1.1.3) (2021-06-30)
 
 
