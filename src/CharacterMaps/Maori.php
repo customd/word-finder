@@ -2,6 +2,7 @@
 
 namespace CustomD\WordFinder\CharacterMaps;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use CustomD\WordFinder\CharacterMap;
 
@@ -13,30 +14,31 @@ class Maori implements CharacterMap
     public function __construct()
     {
         $this->chars = collect([
-            65,
-            196,
-            69,
-            203,
-            71,
-            72,
-            73,
-            207,
-            75,
-            77,
-            78,
-            79,
-            214,
-            80,
-            82,
-            84,
-            85,
-            220,
-            87,
+            'a',
+            'ā',
+            'e',
+            'ē',
+            'g',
+            'h',
+            'i',
+            'ī',
+            'k',
+            'm',
+            'n',
+            'o',
+            'ō',
+            'p',
+            'r',
+            't',
+            'u',
+            'ū',
+            'w'
         ]);
     }
 
     public function getRandomChar()
     {
-        return chr($this->chars->random());
+
+        return Str::upper($this->chars->random());
     }
 }
