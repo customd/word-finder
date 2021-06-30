@@ -280,4 +280,9 @@ class Grid
             return $label;
         });
     }
+
+    public function getGridSize()
+    {
+        return $this->gridSize;
+    }
 }
