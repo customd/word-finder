@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/customd/word-finder/compare/v1.1.2...v1.1.3) (2021-06-30)
+
+
+### Bug Fixes
+
+* maori chars encode correctly ([436c4ae](https://github.com/customd/word-finder/commit/436c4ae4e250e5dd8173807c938693977cbfc1f6))
+
 ## [1.1.2](https://github.com/customd/word-finder/compare/v1.1.1...v1.1.2) (2021-06-25)
 
 
