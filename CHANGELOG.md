@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/customd/word-finder/compare/v1.2.1...v1.2.2) (2021-07-12)
+
+
+### Bug Fixes
+
+* **moari:** Encoding issues with non-english chars ([e20386f](https://github.com/customd/word-finder/commit/e20386f4f8da189b8accf43878955ced051972af))
+
 ## [1.2.1](https://github.com/customd/word-finder/compare/v1.2.0...v1.2.1) (2021-07-12)
 
 
