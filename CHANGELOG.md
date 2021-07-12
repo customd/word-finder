@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/customd/word-finder/compare/v1.2.2...v1.2.3) (2021-07-12)
+
+
+### Bug Fixes
+
+* early return on reverse method ([b3c36d9](https://github.com/customd/word-finder/commit/b3c36d9d6e69fb9ad9f882a201f84fec1a66f1f7))
+
 ## [1.2.2](https://github.com/customd/word-finder/compare/v1.2.1...v1.2.2) (2021-07-12)
 
 
