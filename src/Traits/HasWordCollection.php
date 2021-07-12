@@ -24,7 +24,7 @@ trait HasWordCollection
         )
         ->map(fn($word) => Str::upper($word));
 
-        $this->wordLengths = $this->wordsCollection->mapToGroups(fn($word) => [strlen($word) => $word]);
+        $this->wordLengths = $this->wordsCollection->mapToGroups(fn($word) => [Str::length($word) => $word]);
 
         return $this;
     }
@@ -34,7 +34,6 @@ trait HasWordCollection
 
         if (count($exclude) === $this->wordLengths->keys()->count()) {
             return 0;
-            throw new RuntimeException("Failed to generate a starting word . please add some additional words to your system");
         }
 
         do {
@@ -72,7 +71,7 @@ trait HasWordCollection
 
     protected function getWordLike(string $pattern): ?string
     {
-        $pattern = str_replace("_", ".", $pattern);
+        $pattern = Str::replace("_", ".", $pattern);
         $words = $this->wordsCollection->filter(function ($word) use ($pattern) {
             return preg_match("/^$pattern\$/i", $word);
         });

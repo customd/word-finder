@@ -2,6 +2,7 @@
 namespace CustomD\WordFinder;
 
 use RuntimeException;
+use Illuminate\Support\Str;
 
 class Word
 {
@@ -14,7 +15,7 @@ class Word
     protected int $start = 0;
     protected int $end = -1;
     protected int $orientation = 0;
-    protected ?string $label;
+    protected ?string $label = null;
     protected bool $inversed = false;
 
     public function __construct($start, $end, int $orientation = 0, ?string $label = null, bool $inversed = false)
@@ -54,7 +55,9 @@ class Word
 
     public function setLabel(?string $label): self
     {
-        $this->label = $label;
+        if ($label !== null) {
+            $this->label = $this->getInversed() ? $this->reverse($label) : $label;
+        }
         return $this;
     }
 
@@ -79,13 +82,26 @@ class Word
         return $this->orientation;
     }
 
-    public function getLabel(): ?string
+    public function getLabel(bool $forceNonInverced = false): ?string
     {
+        if ($forceNonInverced && $this->getInversed()) {
+            return $this->reverse($this->label);
+        }
         return $this->label;
     }
 
     public function getInversed(): bool
     {
         return $this->inversed;
+    }
+
+    public function reverse(string $str): string
+    {
+        return $str;
+        $r = '';
+        for ($i = Str::length($str); $i>=0; $i--) {
+            $r .= Str::substr($str, $i, 1);
+        }
+        return $r;
     }
 }

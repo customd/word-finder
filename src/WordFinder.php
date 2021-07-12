@@ -32,6 +32,6 @@ class WordFinder
     public function getRandomChar(?CharacterMap $characterMap = null): string
     {
         $class = $characterMap ?? resolve($this->config['character_map']);
-        return $class->getRandomChar();
+        return $class->/** @scrutinizer ignore-call */getRandomChar();
     }
 }

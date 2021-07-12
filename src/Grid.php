@@ -3,6 +3,8 @@
 namespace CustomD\WordFinder;
 
 use RuntimeException;
+use Illuminate\Support\Str;
+use CustomD\WordFinder\Word;
 use Illuminate\Support\Collection;
 use CustomD\WordFinder\Traits\HasWordCollection;
 use CustomD\WordFinder\Facades\WordFinder as WordFinderFacade;
@@ -111,7 +113,7 @@ class Grid
 
         if (! $flag) {
             $randomWord = $this->getRandomWord($len);
-            $word->setLabel($word->getInversed() ? strrev($randomWord) : $randomWord);
+            $word->setLabel($randomWord);
             $this->addWord($word);
             return;
         }
@@ -120,7 +122,7 @@ class Grid
             return;
         }
 
-        $word->setLabel($this->getWordLike($string))->setInversed(false);
+        $word->setInversed(false)->setLabel($this->getWordLike($string));
         $this->addWord($word);
     }
 
@@ -236,8 +238,8 @@ class Grid
                 break;
         }
 
-        for ($i = $word->getStart(); $j < strlen($word->getLabel()); $i += $incrementBy) {
-            $this->cells[$i] = substr($word->getLabel(), $j, 1);
+        for ($i = $word->getStart(); $j < Str::length($word->getLabel()); $i += $incrementBy) {
+            $this->cells[$i] = Str::substr($word->getLabel(), $j, 1);
             $j++;
         }
 
@@ -276,11 +278,7 @@ class Grid
     public function getPuzzleWords()
     {
         return collect($this->wordsList)->map(function (Word $word) {
-            $label = $word->getLabel();
-            if ($word->getInversed()) {
-                $label = strrev(/** @scrutinizer ignore-type */$label);
-            }
-            return $label;
+            return $word->getLabel(true);
         });
     }
 

@@ -39,6 +39,6 @@ class Maori implements CharacterMap
     public function getRandomChar()
     {
 
-        return Str::upper(mb_convert_encoding($this->chars->random(), 'UTF-8', 'UTF-8'));
+        return Str::upper($this->chars->random());
     }
 }
