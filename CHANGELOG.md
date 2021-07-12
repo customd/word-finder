@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/customd/word-finder/compare/v1.2.0...v1.2.1) (2021-07-12)
+
+
+### Bug Fixes
+
+* randomisation calculation and finish of words ([30e23cd](https://github.com/customd/word-finder/commit/30e23cd37fd1c0afc9de1d8d2240f3e4f5e7a6f7))
+
 # [1.2.0](https://github.com/customd/word-finder/compare/v1.1.3...v1.2.0) (2021-06-30)
 
 
