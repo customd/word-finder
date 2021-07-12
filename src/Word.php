@@ -95,13 +95,9 @@ class Word
         return $this->inversed;
     }
 
-    public function reverse(string $str): string
+    public function reverse(string $string, ?string $encoding = null): string
     {
-        return $str;
-        $r = '';
-        for ($i = Str::length($str); $i>=0; $i--) {
-            $r .= Str::substr($str, $i, 1);
-        }
-        return $r;
+        $chars = mb_str_split($string, 1, $encoding ?? mb_internal_encoding());
+        return implode('', array_reverse($chars));
     }
 }
