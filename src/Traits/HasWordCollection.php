@@ -14,6 +14,8 @@ trait HasWordCollection
      */
     protected Collection $wordsCollection;
 
+    protected Collection $wordLengths;
+
 
     protected function setWordsCollection(Collection $wordsCollection): self
     {
@@ -22,24 +24,32 @@ trait HasWordCollection
         )
         ->map(fn($word) => Str::upper($word));
 
+        $this->wordLengths = $this->wordsCollection->mapToGroups(fn($word) => [strlen($word) => $word]);
+
         return $this;
     }
 
     protected function getRandomWordLength(array $exclude = []): int
     {
-        if (count($exclude) >= ($this->maxWordLen - $this->minWordLen)) {
+
+        if (count($exclude) === $this->wordLengths->keys()->count()) {
+            return 0;
             throw new RuntimeException("Failed to generate a starting word . please add some additional words to your system");
         }
 
         do {
-            $len = rand($this->minWordLen, $this->gridSize);
+            $len = $this->wordLengths->keys()->random();
         } while (in_array($len, $exclude));
 
         $available = $this->wordsCollection->filter(fn ($word) => Str::length($word) === $len)->count();
 
+        if ($available > 0) {
+            return $len;
+        }
+
         $exclude[] = $len;
 
-        return $available > 0 ? $len : $this->getRandomWordLength($exclude);
+        return $this->getRandomWordLength($exclude);
     }
 
     protected function markWordUsed($word): void

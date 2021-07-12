@@ -181,6 +181,9 @@ class Grid
     protected function placeWord($start): void
     {
         $len = $this->getRandomWordLength();
+        if ($len === 0) {
+            return;
+        }
         $word = Word::createRandom($start);
 
         switch ($word->getOrientation()) {
