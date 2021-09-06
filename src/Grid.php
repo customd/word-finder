@@ -81,10 +81,10 @@ class Grid
 
     public function generate(): self
     {
-        $blocks = $this->gridSize * $this->gridSize;
+        $blocks = $this->gridSize * $this->gridSize; //36
         $i=rand(0, $blocks-1);
 
-        $complete=0;
+        $complete=0;                   //0
         while ($complete < $blocks) {
             $this->placeWord($i);
             $complete++;
@@ -118,7 +118,7 @@ class Grid
             return;
         }
 
-        if (strpos($string, '_')===false) {
+        if (Str::contains($string, '_')===false) {
             return;
         }
 
@@ -239,6 +239,11 @@ class Grid
         }
 
         for ($i = $word->getStart(); $j < Str::length($word->getLabel()); $i += $incrementBy) {
+            $nchar = Str::substr($word->getLabel(), $j, 1);
+            if ($this->cells[$i] !== $nchar
+                && ! is_null($this->cells[$i])) {
+                throw new RuntimeException("Null or Char required: {$this->cells[$i]} - {$nchar}");
+            }
             $this->cells[$i] = Str::substr($word->getLabel(), $j, 1);
             $j++;
         }
@@ -260,25 +265,34 @@ class Grid
 
     public function getGrid()
     {
+
+        $charClass = resolve(config('word-finder.character_map'));
+
+        $callback = method_exists($charClass, 'unmapChars') ? fn($str) => $charClass->unmapChars($str) : fn($str) => $str;
+
         $return = [];
         $column = 0;
         $row = 0;
         foreach ($this->cells as $letter) {
             $cell = $letter ?? WordFinderFacade::getRandomChar();
-            $return[$row][$column] = $cell;
+            $return[$row][$column] = $callback($cell);
             $column++;
             if ($column === $this->gridSize) {
                 $row++;
                 $column = 0;
             }
         }
+
         return $return;
     }
 
     public function getPuzzleWords()
     {
         return collect($this->wordsList)->map(function (Word $word) {
-            return $word->getLabel(true);
+            $str = $word->getLabel(true);
+             $charClass = resolve(config('word-finder.character_map'));
+
+            return method_exists($charClass, 'unmapChars') ? $charClass->unmapChars($str) : $str;
         });
     }
 
