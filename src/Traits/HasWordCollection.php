@@ -19,10 +19,17 @@ trait HasWordCollection
 
     protected function setWordsCollection(Collection $wordsCollection): self
     {
-        $this->wordsCollection = $wordsCollection->filter(
-            fn ($word) =>  Str::length($word) >= $this->minWordLen && Str::length($word) <= $this->maxWordLen
-        )
-        ->map(fn($word) => Str::upper($word));
+        $this->wordsCollection = $wordsCollection
+            ->map(
+                function ($word) {
+                    $charClass = resolve(config('word-finder.character_map'));
+                    $word = (method_exists($charClass, 'mapChars')) ? $charClass->mapChars($word) : $word;
+                    return Str::replace(" ", "", Str::upper($word));
+                }
+            )
+            ->filter(
+                fn ($word) =>  Str::length($word) >= $this->minWordLen && Str::length($word) <= $this->maxWordLen
+            );
 
         $this->wordLengths = $this->wordsCollection->mapToGroups(fn($word) => [Str::length($word) => $word]);
 
