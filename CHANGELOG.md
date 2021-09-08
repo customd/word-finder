@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/customd/word-finder/compare/v1.2.3...v1.2.4) (2021-09-08)
+
+
+### Bug Fixes
+
+* maori character spacing on encoding ([c732f3d](https://github.com/customd/word-finder/commit/c732f3d188409e87bab950fc4f868a24b55a6771))
+
 ## [1.2.3](https://github.com/customd/word-finder/compare/v1.2.2...v1.2.3) (2021-07-12)
 
 
